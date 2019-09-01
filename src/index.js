@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import initializeDb from './db';
 import middleware from './middleware';
 import api from './api';
-import config from './config.json';
+import config from './config.js'; 
 
 let app = express();
 app.server = http.createServer(app);
@@ -21,20 +21,25 @@ app.use(cors({
 
 app.use(bodyParser.json({
 	limit : config.bodyLimit
-}));
+}));  
 
 // connect to db
-initializeDb( db => {
+try {
+	initializeDb( db => {
 
-	// internal middleware
-	app.use(middleware({ config, db }));
+		// internal middleware
+		app.use(middleware({ config, db }));
 
-	// api router
-	app.use('/api', api({ config, db }));
+		// api router
+		app.use('/api', api({ config, db }));
 
-	app.server.listen(process.env.PORT || config.port, () => {
-		console.log(`Started on port ${app.server.address().port}`);
+		app.server.listen(config.port, () => {
+			console.log(`Started on port ${app.server.address().port}`);
+		});
 	});
-});
+} catch (error) { 
+	console.log(error);
+}
+
 
 export default app;
