@@ -20,7 +20,11 @@ export default ({ config, db }) => {
 		[check('name') 
 			.exists()
 				.withMessage('Name Must exists')  
-		], restaurants.addRestaurant);
+		], restaurants.addRestaurant
+	);
+	
+	//get restaurant details
+	api.get('/restaurant/:id', restaurants.viewRestaurant);
 
 	
 	return api;

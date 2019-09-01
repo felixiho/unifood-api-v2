@@ -35,4 +35,21 @@ const addRestaurant = async (req, res) => {
 
 }
 
-export default {addRestaurant}
+
+/**
+ * @function ViewRestaurant 
+ * @description Get restaurant details by id
+ * @param {*} req 
+ * @param {*} res 
+ */
+const viewRestaurant = async (req, res) => {     
+    try {   
+        let getRestaurant = await Restaurant.findById(req.params.id); 
+        return res.json( getRestaurant ); 
+    } catch (error) { 
+        res.status(500).send(error);
+    }
+
+}
+
+export default {addRestaurant, viewRestaurant}
