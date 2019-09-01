@@ -1,6 +1,8 @@
 import { version } from '../../package.json';
 import { Router } from 'express';
 import facets from './facets';
+import restaurants from './Controllers/restaurants.js'
+import { check, validationResult } from 'express-validator';
 
 export default ({ config, db }) => {
 	let api = Router();
@@ -13,5 +15,13 @@ export default ({ config, db }) => {
 		res.json({ version });
 	});
 
+	//Add new restaurants
+	api.post('/addnew',  
+		[check('name') 
+			.exists()
+				.withMessage('Name Must exists')  
+		], restaurants.addRestaurant);
+
+	
 	return api;
 }

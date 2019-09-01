@@ -4,7 +4,7 @@ const {Schema} = mongoose;
  
 
  
-export default () => 
+export default 
    new Schema({
         Rate: Number,
         Comment: String,
