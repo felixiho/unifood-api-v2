@@ -59,8 +59,9 @@ const viewRestaurant = async (req, res) => {
  * @param {*} res 
  */
 const getRestaurants = async (req, res) => { 
-    const length = req.params.resultLength ? req.params.resultLength : 10; 
-    const currentPage = req.params.page ? req.params.page : 1;
+    const length =  req.params.resultLength ? parseInt(req.params.resultLength) : 10; 
+    const currentPage = req.params.page ? parseInt(req.params.page) : 1;
+    console.log(length)
 
     try {   
         const getRestaurants = await Restaurant.find()
@@ -76,4 +77,26 @@ const getRestaurants = async (req, res) => {
     }
 
 }
-export default {addRestaurant, viewRestaurant, getRestaurants}
+
+/**
+ * @function searchRestaurants 
+ * @description Search restaurants
+ * @param {*} req 
+ * @param {*} res 
+ */
+const searchRestaurants = async (req, res) => {
+    try {
+        const partialtitle = new RegExp(req.params.restaurant, "i");
+        const results = await Restaurant.find({
+            'name': partialtitle 
+        })
+        .sort({rating: -1})
+        .limit(10); 
+        
+        return res.json( results );
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
+export default {addRestaurant, viewRestaurant, getRestaurants, searchRestaurants}

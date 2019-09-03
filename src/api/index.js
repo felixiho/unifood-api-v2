@@ -27,7 +27,10 @@ export default ({ config, db }) => {
 	api.get('/restaurant/:id', restaurants.viewRestaurant);
 
 	//get restaurants by paginating
-	api.get('/restaurants/:resultLength?/:page?', restaurants.getRestaurants);
+	api.get('/restaurants/:resultLength?/:page?', restaurants.getRestaurants); 
+
+	//search restaurants
+	api.get('/get-restaurant/:restaurant', restaurants.searchRestaurants);
 
 	
 	return api;
