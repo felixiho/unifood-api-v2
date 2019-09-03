@@ -26,6 +26,9 @@ export default ({ config, db }) => {
 	//get restaurant details
 	api.get('/restaurant/:id', restaurants.viewRestaurant);
 
+	//get restaurants by paginating
+	api.get('/restaurants/:resultLength?/:page?', restaurants.getRestaurants);
+
 	
 	return api;
 }

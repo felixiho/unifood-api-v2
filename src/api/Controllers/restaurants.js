@@ -52,4 +52,28 @@ const viewRestaurant = async (req, res) => {
 
 }
 
-export default {addRestaurant, viewRestaurant}
+/**
+ * @function getRestaurants 
+ * @description Get all restaurants
+ * @param {*} req 
+ * @param {*} res 
+ */
+const getRestaurants = async (req, res) => { 
+    const length = req.params.resultLength ? req.params.resultLength : 10; 
+    const currentPage = req.params.page ? req.params.page : 1;
+
+    try {   
+        const getRestaurants = await Restaurant.find()
+            .skip(length * (currentPage - 1))
+            .limit(length);
+
+        const restaurantNumber = await Restaurant.countDocuments(); // count the number of records for that model
+
+        res.setHeader('max-records', restaurantNumber);
+        return res.json( getRestaurants ); 
+    } catch (error) {  
+        res.status(500).send(error);
+    }
+
+}
+export default {addRestaurant, viewRestaurant, getRestaurants}
