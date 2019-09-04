@@ -57,4 +57,55 @@ const postRating = async (req, res) => {
 
 }
 
-export default { postRating }
+
+/**
+ * @function getComments 
+ * @description Get all comments based on restaurantId
+ * @param {*} req 
+ * @param {*} res 
+ */
+const getComments= async (req, res) => { 
+    const length =  req.params.resultLength ? parseInt(req.params.resultLength) : 10; 
+    const currentPage = req.params.page ? parseInt(req.params.page) : 1; 
+
+    Restaurant.findById(req.params.id)
+        .then( getRestaurant =>{
+            if(!getRestaurant){ 
+                return res.status(422).json({ errors: "Invalid Restaurant"})
+            }  
+            try {   
+                    Rates.find({restaurantId: req.params.id})
+                        .skip(length * (currentPage - 1))
+                        .limit(length)
+                        .exec((error,  comments)=> {
+                            if(!error){ 
+                                return res.json( comments ); 
+                            }else{
+                                res.status(401).send({
+                                    errors: [
+                                        {
+                                            msg: "Something went wrong"
+                                        }
+                                    ]
+                                }); 
+                            }
+                        })  
+            } catch (error) {  
+                res.status(500).send(error);
+            }
+        }).catch(error => {  
+            //Catch error for wrong ID
+            if(error.name == "CastError" ){
+                res.status(422).send({
+                    errors: [
+                        {
+                            msg: "Restaurant does not exist"
+                        }
+                    ]
+                }); 
+            }
+            res.status(500).send(error);
+        });
+}
+  
+export default { postRating, getComments }
