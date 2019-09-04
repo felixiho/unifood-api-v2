@@ -60,8 +60,7 @@ const viewRestaurant = async (req, res) => {
  */
 const getRestaurants = async (req, res) => { 
     const length =  req.params.resultLength ? parseInt(req.params.resultLength) : 10; 
-    const currentPage = req.params.page ? parseInt(req.params.page) : 1;
-    console.log(length)
+    const currentPage = req.params.page ? parseInt(req.params.page) : 1; 
 
     try {   
         const getRestaurants = await Restaurant.find()
@@ -92,7 +91,7 @@ const searchRestaurants = async (req, res) => {
         })
         .sort({rating: -1})
         .limit(10); 
-        
+
         return res.json( results );
     } catch (error) {
         res.status(500).send(error);
