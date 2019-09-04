@@ -3,5 +3,5 @@ import ratesSchema from "./schemas/rates.js";
 
 const { model } = mongoose; 
 
-export default model('Restaurant', ratesSchema );
+export default model('Rates', ratesSchema );
 

@@ -2,7 +2,8 @@ import { version } from '../../package.json';
 import { Router } from 'express';
 import facets from './facets';
 import restaurants from './Controllers/restaurants.js'
-import { check, validationResult } from 'express-validator';
+import rates from './Controllers/rates.js';
+import { check } from 'express-validator';
 
 export default ({ config, db }) => {
 	let api = Router();
@@ -32,6 +33,20 @@ export default ({ config, db }) => {
 	//search restaurants
 	api.get('/get-restaurant/:restaurant', restaurants.searchRestaurants);
 
-	
+	//post rating
+	api.post('/rate',  
+		[check('restaurantId') 
+			.exists()
+				.withMessage('Invalid restaurant'),
+		check('rate')
+		.exists()
+			.withMessage('Rate cannot be empty'),
+		check('name') 
+			.exists()
+				.withMessage('Name Must exists') 
+		], rates.postRating
+	);
+
+
 	return api;
 }
