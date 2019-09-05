@@ -107,5 +107,58 @@ const getComments= async (req, res) => {
             res.status(500).send(error);
         });
 }
+
+
+/**
+ * @function handleComment
+ * @description upvote or downvote or flag a comment
+ * @param {*} req|
+ * @param {*} res 
+ */
+const handleComment = async (req, res) => {   
+    //Validate body 
+    const errors = validationResult(req); 
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const data = req.body;  
+    Rates.findById(data.ratesId).then((rate) => {
+        if(!rate){
+            res.status(422).send({
+                errors: [
+                    {
+                        msg: "Rate does not exist"
+                    }
+                ]
+            }); 
+        }
+        //return mutated version of rate model
+        return Object.assign(rate, {
+            [data.type]: data.type === "flagged" ? true : rate[data.type] + 1
+        });
+    }).then((rate) => { 
+        return rate.save();
+    }).catch(error => {
+        res.status(500).send(error);
+    }).then((updatedComment) => {
+        res.json({ 
+            updatedComment
+        });
+    }).catch((error) => {
+        if(error.name == "CastError" ){
+            res.status(422).send({
+                errors: [
+                    {
+                        msg: "Rate does not exist"
+                    }
+                ]
+            }); 
+        }
+        res.status(500).send(error);
+    });   
+    
+
+}
   
-export default { postRating, getComments }
+export default { postRating, getComments, handleComment }

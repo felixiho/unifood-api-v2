@@ -51,6 +51,8 @@ export default ({ config, db }) => {
 	//get ratings by paginating
 	api.get('/ratings/:id/:resultLength?/:page?', rates.getComments); 
 
+		//post rating
+	api.post('/handle-comment',  rates.handleComment );
 
 	return api;
 }

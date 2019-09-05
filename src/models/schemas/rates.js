@@ -14,5 +14,5 @@ export default
         name: {type: String, required: true},
         upvotes: {type: Number, default: 0},
         downvotes: {type: Number, default: 0},
-        flagged: {type: Number, default: false}  
+        flagged: {type: Boolean, default: false}  
         },    {timestamps: true});
