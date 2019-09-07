@@ -98,4 +98,25 @@ const searchRestaurants = async (req, res) => {
     }
 }
 
-export default {addRestaurant, viewRestaurant, getRestaurants, searchRestaurants}
+/**
+ * @function getTrending 
+ * @description Get trending restaurants
+ * @param {*} req 
+ * @param {*} res 
+ */
+const getTrending = async (req, res) => {  
+
+    try {   
+        const trending = await Restaurant.find()
+                                    .sort({rating: -1})
+                                    .limit(3);
+  
+        return res.json( trending ); 
+    } catch (error) {  
+        res.status(500).send(error);
+    }
+
+}
+
+
+export default {addRestaurant, viewRestaurant, getRestaurants, searchRestaurants, getTrending}

@@ -7,7 +7,7 @@ export default
    new Schema({
         name:  String,
         location: String,
-        rating:   {type: Number, default: 4.0}, 
+        rating:   {type: Number, default: 4.10}, 
         phone: [Number],
         address: String,
         description: String,

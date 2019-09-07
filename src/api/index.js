@@ -33,6 +33,9 @@ export default ({ config, db }) => {
 	//search restaurants
 	api.get('/get-restaurant/:restaurant', restaurants.searchRestaurants);
 
+	//search restaurants
+	api.get('/trending', restaurants.getTrending);
+
 	//post rating
 	api.post('/rate',  
 		[check('restaurantId') 
