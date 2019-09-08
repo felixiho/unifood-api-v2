@@ -160,5 +160,35 @@ const handleComment = async (req, res) => {
     
 
 }
+
+/**
+ * @function getRateCount
+ * @description Get the amount of times a restaurant has been rated
+ * @param {*} req|@restaurantId
+ * @param {*} res 
+ */
+const getRateCount = async (req, res) => {
+    const errors = validationResult(req); 
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    try {
+        let rateCount = await Rates.find({restaurantId: req.params.restaurantId});
+        return res.json({"ratecount": rateCount.length});
+    } catch (error) {
+        if(error.name == "CastError" ){
+            res.status(422).send({
+                errors: [
+                    {
+                        msg: "Restaurant does not exist"
+                    }
+                ]
+            }); 
+        }
+        res.status(500).send(error);
+    }
+
+}
   
-export default { postRating, getComments, handleComment }
+export default { postRating, getComments, handleComment, getRateCount }

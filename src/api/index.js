@@ -33,7 +33,7 @@ export default ({ config, db }) => {
 	//search restaurants
 	api.get('/get-restaurant/:restaurant', restaurants.searchRestaurants);
 
-	//search restaurants
+	//trending restaurants
 	api.get('/trending', restaurants.getTrending);
 
 	//post rating
@@ -54,8 +54,17 @@ export default ({ config, db }) => {
 	//get ratings by paginating
 	api.get('/ratings/:id/:resultLength?/:page?', rates.getComments); 
 
-		//post rating
+	//review rating
 	api.post('/handle-comment',  rates.handleComment );
+
+	//Get rate count
+	api.get('/rateCount/:restaurantId',
+		[
+			check('restaurantId')
+				.exists()
+					.withMessage('Invalid restaurant')
+		], rates.getRateCount
+	);
 
 	return api;
 }
