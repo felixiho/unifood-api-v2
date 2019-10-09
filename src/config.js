@@ -5,7 +5,7 @@ dotenv.config();
 
 export default  
     {   
-        "port": 8006,
+        "port": 3002,
         "bodyLimit": "100kb",
         "corsHeaders": ["Link"],
         "db": process.env.DB_CONNECTION
